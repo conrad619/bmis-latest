@@ -207,6 +207,12 @@ if ($_SESSION['role'] == "Administrator") {
                             <i class="fa fa-warning" aria-hidden="true"></i> <span>Complaints</span>
                             </a>
                             </li>
+                            
+                        <li>
+                            <a href="../clearance/map.php">
+                            <i class="fa fa-map" aria-hidden="true"></i> <span>Map</span>
+                            </a>
+                        </li>
 
                         </ul>';
 } elseif (isset($_SESSION['staff'])) {
