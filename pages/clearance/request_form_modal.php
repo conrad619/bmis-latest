@@ -2,10 +2,14 @@
 <?php
 $resident_id = $_SESSION['userid'];
 $resident_new = mysqli_query($con, "SELECT * from tbl_resident_new WHERE resident_id = '$resident_id'");
+$purok_list = mysqli_query($con, "SELECT * from brgy_purok");
 while ($row = mysqli_fetch_array($resident_new)) {
 
    $household_uk = $row['household_member_uk'];
    $full_name_owner_account = $row['f_name'] . ' ' . $row['l_name'] . ' ' . $row['m_name'];
+}
+while ($row = mysqli_fetch_array($purok_list)){
+    $purok_n = $row['purok_name'];
 }
 
 
@@ -57,8 +61,22 @@ while ($row = mysqli_fetch_array($resident_new)) {
                      </div> -->
 
                      <div class="form-group">
+
                         <label class="col-form-label" for="form-address">Purok</label>
-                        <input name="resident_address" placeholder="Specify your prk... ex: Prk1" class="form-last-name form-control input-error" id="resident_address" type="text" required>
+                        <!--<input name="resident_address" placeholder="Specify your prk... ex: Prk1" class="form-last-name form-control input-error" id="resident_address" type="text" required>-->
+                        <select name="brgy_purok_id" id="purok_brgy" class="form-control" required>
+
+                           <?php
+                           $brgy_purok_list = mysqli_query($con, "SELECT * from brgy_purok");
+                           while ($row_hmember = mysqli_fetch_array($brgy_purok_list)) {
+
+                              echo '  <option value="' . $row_hmember['purok_id'] . '">' . $row_hmember['purok_name']  . '</option>';
+                           }
+
+
+                           ?> 
+                        </select> 
+
                      </div>
                   </div>
                </fieldset>
@@ -313,7 +331,7 @@ while ($row = mysqli_fetch_array($resident_new)) {
                <label for="recipient-name" class="col-form-label">Birthdate: <span id="sp_birthdate_name"></span></label>
             </div> -->
             <div class="form-group">
-               <label for="recipient-name" class="col-form-label">Resident Address: <span id="sp_resodent_address_name"></span></label>
+               <label for="recipient-name" class="col-form-label">Resident Address: <span id="sp_resident_address_name"></span></label>
             </div>
             <div class="form-group">
                <label for="recipient-name" class="col-form-label">Request Type: <span id="sp_req_type_name"></span></label>
@@ -529,7 +547,7 @@ while ($row = mysqli_fetch_array($resident_new)) {
                   });
 
                   $("#sp_first_name").text(jsonData.data.household_member_id);
-                  $("#sp_resodent_address_name").text(jsonData.data.resident_address);
+                  $("#sp_resident_address_name").text(jsonData.data.purok_name);
                   $("#sp_req_type_name").text(jsonData.data.request_type);
                   $("#sp_purpose_name").text(jsonData.data.purpose);
                   $("#sp_amount_form_name").text(jsonData.data.amount_form);
