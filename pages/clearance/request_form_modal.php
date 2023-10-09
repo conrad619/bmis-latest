@@ -64,7 +64,7 @@ while ($row = mysqli_fetch_array($purok_list)){
 
                         <label class="col-form-label" for="form-address">Purok</label>
                         <!--<input name="resident_address" placeholder="Specify your prk... ex: Prk1" class="form-last-name form-control input-error" id="resident_address" type="text" required>-->
-                        <select name="brgy_purok_id" id="purok_brgy" class="form-control" required>
+                        <select name="resident_address" id="purok_brgy" class="form-control" required>
 
                            <?php
                            $brgy_purok_list = mysqli_query($con, "SELECT * from brgy_purok");

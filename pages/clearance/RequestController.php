@@ -5,7 +5,7 @@
         include "../connection.php";
         $status = "Pending";
         
-        $information_insert = mysqli_query($con,"INSERT INTO request_form_information (user_id,house_member_id,address,status) 
+        $information_insert = mysqli_query($con,"INSERT INTO request_form_information (user_id,house_member_id,address_id,status) 
         values (".$_POST['user_id'].", '".$_POST['household_member_id']."', '".$_POST["resident_address"]."','".$status."')");
         $req_form_information_id = mysqli_insert_id($con);
         $date_deceased = $_POST['day_of_deceased'] == '' ? "null" : $_POST['day_of_deceased'];
