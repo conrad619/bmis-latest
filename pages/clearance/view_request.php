@@ -641,6 +641,10 @@ WHERE form_table1.req_form_type_id  = '$request_id'
             <label for="Purpose">Purpose</label>
             <textarea name="" class="form-control" name = "purpose" id="Purpose" cols="10" rows="3" readonly><?= $row['purpose'] ?></textarea>
             </div>
+            <div class="form-group col-md-12">
+            <label for="attached_photo">Attached Photo</label><br>
+            <img src="./uploads/<?= $row['attached_photo'] ?>" width="500"/>
+            </div>
 
            <!-- modal button -->
 
@@ -1295,6 +1299,12 @@ WHERE form_table1.req_form_type_id  = '$request_id'
         <div class="form-group col-md-12">
             <label for="Purpose">Purpose</label>
             <textarea name="" class="form-control" name = "purpose" id="Purpose" cols="10" rows="3" readonly><?= $row['purpose'] ?></textarea>
+            </div>
+
+            
+        <div class="form-group col-md-12">
+            <label for="attached_photo">Attached Photo</label><br>
+            <img src="./uploads/<?= $row['attached_photo'] ?>" width="500"/>
             </div>
 
           
