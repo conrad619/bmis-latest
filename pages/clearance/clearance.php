@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <?php
 session_start();
 if (!isset($_SESSION['role'])) {
@@ -8,6 +7,7 @@ if (!isset($_SESSION['role'])) {
 } else {
     ob_start();
     include('../head_css.php'); ?>
+    
 
     <body class="skin-black">
         <!-- header logo: style can be found in header.less -->

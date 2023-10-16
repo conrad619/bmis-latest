@@ -261,12 +261,13 @@ $request_id = $_GET['ID'];
 
 
 
-$squery_new = mysqli_query($con, "SELECT form_table1.*,form_table2.*,form_table3.*,form_table4.*, form_table5.f_name as fname_acc_own, form_table5.l_name as lname_acc_own,form_table5.m_name as mname_acc_own 
+$squery_new = mysqli_query($con, "SELECT form_table1.*,form_table2.*,form_table3.*,form_table4.*, form_table5.f_name as fname_acc_own, form_table5.l_name as lname_acc_own,form_table5.m_name as mname_acc_own, form_table6.purok_name as address
 FROM request_form_type as form_table1 
 inner join request_form_information as form_table2 on form_table1.req_form_information_id = form_table2.req_form_information_id 
 inner join form_type as form_table3 on form_table1.req_id = form_table3.req_id 
 inner join tbl_resident_house_member as form_table4 on form_table2.house_member_id = form_table4.household_id
 inner join tbl_resident_new as form_table5 on form_table2.user_id = form_table5.resident_id
+inner join brgy_purok as form_table6 on form_table2.address_id = form_table6.purok_id
 WHERE form_table1.req_form_type_id  = '$request_id'
 ") or die('Error: ' . mysqli_error($con));
 
@@ -640,6 +641,10 @@ WHERE form_table1.req_form_type_id  = '$request_id'
             <label for="Purpose">Purpose</label>
             <textarea name="" class="form-control" name = "purpose" id="Purpose" cols="10" rows="3" readonly><?= $row['purpose'] ?></textarea>
             </div>
+            <div class="form-group col-md-12">
+            <label for="attached_photo">Attached Photo</label><br>
+            <img src="./uploads/<?= $row['attached_photo'] ?>" width="500"/>
+            </div>
 
            <!-- modal button -->
 
@@ -935,12 +940,13 @@ $request_id = $_GET['ID'];
 
 
 
-$squery_new = mysqli_query($con, "SELECT form_table1.*,form_table2.*,form_table3.*,form_table4.*, form_table5.f_name as fname_acc_own, form_table5.l_name as lname_acc_own,form_table5.m_name as mname_acc_own 
+$squery_new = mysqli_query($con, "SELECT form_table1.*,form_table2.*,form_table3.*,form_table4.*, form_table5.f_name as fname_acc_own, form_table5.l_name as lname_acc_own,form_table5.m_name as mname_acc_own, form_table6.purok_name as address
 FROM request_form_type as form_table1 
 inner join request_form_information as form_table2 on form_table1.req_form_information_id = form_table2.req_form_information_id 
 inner join form_type as form_table3 on form_table1.req_id = form_table3.req_id 
 inner join tbl_resident_house_member as form_table4 on form_table2.house_member_id = form_table4.household_id
 inner join tbl_resident_new as form_table5 on form_table2.user_id = form_table5.resident_id
+inner join brgy_purok as form_table6 on form_table2.address_id = form_table6.purok_id
 WHERE form_table1.req_form_type_id  = '$request_id'
 ") or die('Error: ' . mysqli_error($con));
 
@@ -1293,6 +1299,12 @@ WHERE form_table1.req_form_type_id  = '$request_id'
         <div class="form-group col-md-12">
             <label for="Purpose">Purpose</label>
             <textarea name="" class="form-control" name = "purpose" id="Purpose" cols="10" rows="3" readonly><?= $row['purpose'] ?></textarea>
+            </div>
+
+            
+        <div class="form-group col-md-12">
+            <label for="attached_photo">Attached Photo</label><br>
+            <img src="./uploads/<?= $row['attached_photo'] ?>" width="500"/>
             </div>
 
           

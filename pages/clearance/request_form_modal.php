@@ -64,7 +64,7 @@ while ($row = mysqli_fetch_array($purok_list)){
 
                         <label class="col-form-label" for="form-address">Purok</label>
                         <!--<input name="resident_address" placeholder="Specify your prk... ex: Prk1" class="form-last-name form-control input-error" id="resident_address" type="text" required>-->
-                        <select name="brgy_purok_id" id="purok_brgy" class="form-control" required>
+                        <select name="resident_address" id="purok_brgy" class="form-control" required>
 
                            <?php
                            $brgy_purok_list = mysqli_query($con, "SELECT * from brgy_purok");
@@ -207,7 +207,6 @@ while ($row = mysqli_fetch_array($purok_list)){
                      </div>
                      <!-- Indigency -->
                      <div id="Indigency">
-
                      </div>
                      <!-- Cert of low income -->
                      <div id="Cert_of_low_income">
@@ -236,6 +235,11 @@ while ($row = mysqli_fetch_array($purok_list)){
                            <label for="recipient-name" class="col-form-label">Purpose:</label>
                            <input type="text" class="form-control" id="purpose" name="purpose" placeholder="Purpose...">
                         </div>
+                        <div class="form-group col-md-12">
+                           <label for="attached_photo" class="col-form-label">Attach Photo:</label>
+                           <input type="file" name="attached_photo" accept="image/*">
+                        </div>
+                        
                      </div>
                   </div>
                </fieldset>
@@ -338,6 +342,9 @@ while ($row = mysqli_fetch_array($purok_list)){
             </div>
             <div class="form-group">
                <label for="recipient-name" class="col-form-label">Purpose: <span id="sp_purpose_name"></span></label>
+            </div>
+            <div class="form-group">
+               <label for="recipient-name" class="col-form-label">Attached Photo: <img src="" id="sp_attached_photo" width="100%"></label>
             </div>
             <!-- <div class="form-group">
                <label for="recipient-name" class="col-form-label">Amount Form: <span id="sp_amount_form_name"></span></label>
@@ -527,14 +534,27 @@ while ($row = mysqli_fetch_array($purok_list)){
 
    $(document).ready(function() {
       $("#review_and_save").click(function() {
-         var data = $("#save_and_review").serialize();
+         var data = new FormData();
+
+         //Form data
+         var form_data = $("#save_and_review").serializeArray();
+         $.each(form_data, function (key, input) {
+            data.append(input.name, input.value);
+         });
+
+         //File data
+         var file_data = $('input[name="attached_photo"]')[0].files;
+         data.append("attached_photo", file_data[0]);
+
          $.ajax({
             type: "POST",
             url: 'RequestController.php',
             data: data,
+            processData: false,
+            contentType: false,
             success: function(response) {
                // var jsonData = JSON.parse(response);
-               // console.log(response);
+               console.log(response);
                var jsonData = JSON.parse(response);
                if (jsonData.success == 0) {
                   $("div[id^='myModal']").each(function() {
@@ -547,7 +567,7 @@ while ($row = mysqli_fetch_array($purok_list)){
                   });
 
                   $("#sp_first_name").text(jsonData.data.household_member_id);
-                  $("#sp_resident_address_name").text(jsonData.data.purok_name);
+                  $("#sp_resident_address_name").text(jsonData.data.resident_address);
                   $("#sp_req_type_name").text(jsonData.data.request_type);
                   $("#sp_purpose_name").text(jsonData.data.purpose);
                   $("#sp_amount_form_name").text(jsonData.data.amount_form);
@@ -556,6 +576,7 @@ while ($row = mysqli_fetch_array($purok_list)){
                   $("#sp_total_name").text(jsonData.data.total_amount);
                   $("#sp_conctact_name").text(jsonData.data.contact_no);
                   $("#sp_delivery_name").text(jsonData.data.address_to_deliver);
+                  $("#sp_attached_photo").attr("src", "./uploads/"+jsonData.data.attached_photo);
                   $("#reciept_id").attr("value", jsonData.data.reciept_id);
                }
             }
