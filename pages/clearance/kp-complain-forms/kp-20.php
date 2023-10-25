@@ -64,7 +64,7 @@ $row = $result->fetch_assoc();
 
 
 
-<body onload="window.print()" onafterprint="self.close()">
+<body id="print">
 
 
     <div class="container">
@@ -151,7 +151,13 @@ $row = $result->fetch_assoc();
 
     </div>
 
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        window.onload = function () {
+            var element = document.getElementById('print');
+            html2pdf(element);
+        }
+    </script>
 
 </body>
 
