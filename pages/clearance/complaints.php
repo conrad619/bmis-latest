@@ -527,14 +527,37 @@ if (!isset($_SESSION['role'])) {
                                                 <div class="modal-body">
                                                     <form method="POST" action="complaint_submit.php">
                                                         <input type="hidden" class="form-control" id="resident_id" name="resident_id" value=" <?php echo $_SESSION['userid']; ?>">
+                                                        <?php
 
+                                                            $user = mysqli_query($con, "SELECT * from tbl_resident_new where resident_id  = '" . $_SESSION['userid'] . "' ");
+                                                            $f_name = "";
+                                                            $l_name = "";
+                                                            if (mysqli_num_rows($user) > 0) {
+                                                                $row_user = $user->fetch_assoc();
+                                                                $f_name = $row_user['f_name'];
+                                                                $l_name = $row_user['l_name'];
+                                                            }
+                                                        ?>
+                                                        
                                                         <div class="form-group">
                                                             <label for="complainant">Complainant Name:</label>
-                                                            <input type="text" class="form-control" id="complainant" name="complainant" required>
+                                                            <input type="text" class="form-control" id="complainant" name="complainant" value="<?php echo $f_name . ' ' . $l_name; ?>" required readonly>
                                                         </div>
                                                         <div class="form-group">
                                                             <label for="against">Against:</label>
-                                                            <input type="text" class="form-control" id="against" name="against" required>
+                                                            <!-- <input type="text" class="form-control" id="against" name="against" required> -->
+                                                            <select name="against" id="against" class="form-control">
+                                                                <?php
+
+                                                                    $user = mysqli_query($con, "SELECT * from tbl_resident_new where not resident_id  = '" . $_SESSION['userid'] . "' ");
+                                                                    if (mysqli_num_rows($user) > 0) {
+        
+                                                                        while ($row_user = $user->fetch_assoc()) {
+                                                                        echo '<option value="'. $row_user["f_name"].' '.$row_user["m_name"].' '.$row_user['l_name'].'">'. $row_user["f_name"].' '.$row_user["m_name"].' '.$row_user['l_name'].'</option>';
+                                                                        }
+                                                                    }
+                                                                ?>
+                                                            </select>
                                                         </div>
                                                         <div class="form-group">
                                                             <label for="purpose">Purpose:</label>
