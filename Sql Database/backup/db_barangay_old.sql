@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 25, 2023 at 06:27 PM
+-- Generation Time: Oct 10, 2023 at 05:02 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -97,19 +97,8 @@ CREATE TABLE `complaints` (
   `response` text DEFAULT NULL,
   `status` enum('pending','acknowledged','settled','dismissed') DEFAULT 'pending',
   `new_schedule` varchar(255) NOT NULL,
-  `old_schedule` varchar(255) NOT NULL,
-  `leader_write` text NOT NULL,
-  `attached_photo` varchar(255) NOT NULL
+  `old_schedule` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-
---
--- Dumping data for table `complaints`
---
-
-INSERT INTO `complaints` (`complaint_id`, `resident_id`, `complainant`, `against`, `date`, `time`, `purpose`, `complain_description`, `response`, `status`, `new_schedule`, `old_schedule`, `leader_write`, `attached_photo`) VALUES
-(10, 5, 'darcon', 'seyer', '2023-10-25', '15:54:53', 'wlay rehistro', 'sakspan lto kalit kalit', 'katol ulo', 'settled', '2023-10-26T21:56', '', '', ''),
-(11, 5, 'Kenneth Tanuron', 'Peter Lost anges Cayatano', '2023-10-25', '17:00:46', 'complanants', 'nangawat', 'priso', 'settled', '2023-10-27T23:10', '', '', '65393e9d61898.jpg'),
-(12, 5, 'Kenneth Tanuron', 'Denis Luz Preston', '2023-10-25', '18:16:32', 'ee', 'dd', '11', 'settled', '2023-10-31T00:22', '', '', '653940cb9fc6c.png');
 
 -- --------------------------------------------------------
 
@@ -280,8 +269,8 @@ INSERT INTO `request_form_information` (`req_form_information_id`, `user_id`, `h
 (126, 5, 23, '7', '2023-10-10 04:25:24', '2023-10-10 04:25:24', 'Pending', ''),
 (127, 5, 23, '9', '2023-10-10 04:26:42', '2023-10-10 04:26:42', 'Pending', ''),
 (128, 5, 23, '3', '2023-10-10 04:27:23', '2023-10-10 04:27:23', 'Pending', ''),
-(129, 5, 23, '3', '2023-10-10 04:30:54', '2023-10-25 21:50:55', 'Process', ''),
-(130, 5, 23, '17', '2023-10-10 04:45:37', '2023-10-25 21:51:01', 'Process', ''),
+(129, 5, 23, '3', '2023-10-10 04:30:54', '2023-10-10 04:30:54', 'Pending', ''),
+(130, 5, 23, '17', '2023-10-10 04:45:37', '2023-10-10 04:45:37', 'Pending', ''),
 (131, 5, 23, '6', '2023-10-10 04:47:10', '2023-10-10 04:47:10', 'Pending', ''),
 (132, 5, 23, '4', '2023-10-10 04:48:53', '2023-10-10 04:48:53', 'Pending', ''),
 (133, 5, 23, '1', '2023-10-10 04:51:36', '2023-10-10 04:51:36', 'Pending', ''),
@@ -879,7 +868,7 @@ ALTER TABLE `brgy_purok`
 -- AUTO_INCREMENT for table `complaints`
 --
 ALTER TABLE `complaints`
-  MODIFY `complaint_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `complaint_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `receipt_transaction`
