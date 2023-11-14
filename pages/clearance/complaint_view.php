@@ -236,7 +236,7 @@ if (!isset($_SESSION['role'])) {
                             <div class="form-group">
                                 <label for="exampleTextarea" class="control-label">Attached Photo:</label>
                                 <br>
-                                <img src="./uploads/<?php echo $row['attached_photo']; ?>" style="width:100%;max-width:500px">
+                                <img src="./uploads/<?php echo $row['attached_photo']; ?>" alt="No Image attached" style="width:100%;max-width:500px">
                             </div>
                             <div class="form-group">
                                 <label for="#schedule">Complaint Trial Schedule:</label>

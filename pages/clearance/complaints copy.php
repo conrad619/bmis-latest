@@ -224,8 +224,28 @@ if (!isset($_SESSION['role'])) {
 
                                 </div><!-- /.box-header -->
                                 <div class="box-body table-responsive">
+                                    <ul class="nav nav-tabs" id="myTab">
+                                        <li class="active"><a data-target="#pending" data-toggle="tab">To Acknowledge</a></li>
+                                        <li><a data-target="#acknowledged" data-toggle="tab">To Settle/Dismiss</a></li>
+                                        <li><a data-target="#closed" data-toggle="tab">Closed</a></li>
+                                    </ul>
+                                    <style>
+                                        .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
 
-                                <table id="table_request1" class="table table-striped table-bordered display responsive nowrap" width="100%">
+                                            color: none;
+                                            border: none;
+                                            background-color: none;
+                                            background: none;
+                                            background: none;
+                                            background: none;
+                                            background: none;
+                                            background: none;
+                                            background: none;
+                                        }
+                                    </style>
+                                    <div class="tab-content" style="padding-top:30px;">
+                                        <div id="pending" class="tab-pane active in">
+                                            <table id="table_request1" class="table table-striped table-bordered display responsive nowrap" width="100%">
                                                 <thead>
                                                     <tr>
                                                         <th class="text-center">#</th>
@@ -243,7 +263,7 @@ if (!isset($_SESSION['role'])) {
                                                     <?php
 
                                                     $resident_id = $_SESSION['userid'];
-                                                    $sql = "SELECT * FROM complaints";
+                                                    $sql = "SELECT * FROM complaints WHERE status = 'pending'";
                                                     $result = $con->query($sql);
 
                                                     if (mysqli_num_rows($result) > 0) {
@@ -300,32 +320,168 @@ if (!isset($_SESSION['role'])) {
 
                                                 </tbody>
                                             </table>
-<!--                                     
-                                    <ul class="nav nav-tabs" id="myTab">
-                                        <li class="active"><a data-target="#pending" data-toggle="tab">To Acknowledge</a></li>
-                                        <li><a data-target="#acknowledged" data-toggle="tab">To Settle/Dismiss</a></li>
-                                        <li><a data-target="#closed" data-toggle="tab">Closed</a></li>
-                                    </ul>
-                                    <style>
-                                        .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
 
-                                            color: none;
-                                            border: none;
-                                            background-color: none;
-                                            background: none;
-                                            background: none;
-                                            background: none;
-                                            background: none;
-                                            background: none;
-                                            background: none;
-                                        }
-                                    </style>
-                                    <div class="tab-content" style="padding-top:30px;">
-                                        <div id="pending" class="tab-pane active in">
-                                           
+                                        </div>
 
-                                        </div> -->
+                                        <div id="acknowledged" class="tab-pane">
+                                            <table id="table_request_pending" class="table table-striped table-bordered display responsive nowrap" width="100%">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="text-center">#</th>
+                                                        <th>Complainant</th>
+                                                        <th>Purpose</th>
+                                                        <th>Date Filed</th>
+                                                        <th>Request status</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
 
+
+                                                <tbody>
+
+                                                    <?php
+
+                                                    $resident_id = $_SESSION['userid'];
+                                                    $sql = "SELECT * FROM complaints WHERE status = 'acknowledged'";
+                                                    $result = $con->query($sql);
+
+                                                    if (mysqli_num_rows($result) > 0) {
+                                                        $x = 1;
+
+                                                        while ($row = $result->fetch_assoc()) {
+
+                                                    ?>
+
+                                                            <tr>
+
+                                                                <td class="text-center"><?= $x++ ?></td>
+                                                                <td><?php echo $row["complainant"]; ?></td>
+                                                                <td><?php echo $row["purpose"] ?></td>
+                                                                <td><?php echo $row["date"] ?></td>
+                                                                <td>
+                                                                    <?php
+                                                                    if ($row['status'] == 'pending') {
+
+                                                                        echo '<h4><span class="label label-info">Pending...</span></h3>';
+                                                                    }
+                                                                    if ($row['status'] == 'acknowledged') {
+
+                                                                        echo '<h4><span class="label label-primary">Acknowledged</span></h3>';
+                                                                    }
+
+                                                                    if ($row['status'] == 'dismissed') {
+
+                                                                        echo '<h4><span class="label label-default">Dismissed</span></h3>';
+                                                                    }
+                                                                    if ($row['status'] == 'settled') {
+
+                                                                        echo '<h4><span class="label label-warning">Settled</span></h3>';
+                                                                    }
+
+                                                                    ?>
+                                                                </td>
+                                                                <td>
+                                                                    <!-- href="view_request.php?ID=<?= $row['req_form_type_id'] ?>" -->
+                                                                    <a href="complaint_view.php?ID=<?= $row['complaint_id'] ?>" class="btn btn-primary"><i class="fa fa-search"></i> View details</a>
+
+                                                                </td>
+
+
+                                                            </tr>
+
+                                                    <?php
+
+                                                        }
+                                                    }
+
+                                                    ?>
+
+
+                                                </tbody>
+
+                                            </table>
+
+                                        </div>
+
+                                        <div id="closed" class="tab-pane">
+                                            <table id="table_request_process" class="table table-striped table-bordered display responsive nowrap" width="100%">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="text-center">#</th>
+                                                        <th>Complainant</th>
+                                                        <th>Purpose</th>
+                                                        <th>Date Filed</th>
+                                                        <th>Request status</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+
+
+                                                <tbody>
+
+                                                    <?php
+
+                                                    $resident_id = $_SESSION['userid'];
+                                                    $sql = "SELECT * FROM complaints WHERE status = 'settled' OR status = 'dismissed'";
+                                                    $result = $con->query($sql);
+
+                                                    if (mysqli_num_rows($result) > 0) {
+                                                        $x = 1;
+
+                                                        while ($row = $result->fetch_assoc()) {
+
+                                                    ?>
+
+                                                            <tr>
+
+                                                                <td class="text-center"><?= $x++ ?></td>
+                                                                <td><?php echo $row["complainant"]; ?></td>
+                                                                <td><?php echo $row["purpose"] ?></td>
+                                                                <td><?php echo $row["date"] ?></td>
+                                                                <td>
+                                                                    <?php
+                                                                    if ($row['status'] == 'pending') {
+
+                                                                        echo '<h4><span class="label label-info">Pending...</span></h3>';
+                                                                    }
+                                                                    if ($row['status'] == 'acknowledged') {
+
+                                                                        echo '<h4><span class="label label-primary">Acknowledged</span></h3>';
+                                                                    }
+
+                                                                    if ($row['status'] == 'dismissed') {
+
+                                                                        echo '<h4><span class="label label-default">Dismissed</span></h3>';
+                                                                    }
+                                                                    if ($row['status'] == 'settled') {
+
+                                                                        echo '<h4><span class="label label-warning">Settled</span></h3>';
+                                                                    }
+
+                                                                    ?>
+                                                                </td>
+                                                                <td>
+                                                                    <!-- href="view_request.php?ID=<?= $row['req_form_type_id'] ?>" -->
+                                                                    <a href="complaint_view.php?ID=<?= $row['complaint_id'] ?>" class="btn btn-primary"><i class="fa fa-search"></i> View details</a>
+
+                                                                </td>
+
+
+                                                            </tr>
+
+                                                    <?php
+
+                                                        }
+                                                    }
+
+                                                    ?>
+
+
+                                                </tbody>
+
+                                            </table>
+
+                                        </div>
 
 
 

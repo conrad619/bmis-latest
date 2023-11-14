@@ -1,7 +1,9 @@
 <?php
 // Get the form data
 $complaint_id = $_GET['ID'];
-$new_schedule = $_POST['new_schedule'];
+if (isset($_POST['new_schedule'])) {
+    $new_schedule = $_POST['new_schedule'];
+}
 
 // Check which button was clicked
 if (isset($_POST['update_settle'])) {
@@ -30,7 +32,10 @@ if ($row['status'] === 'pending') {
 } else if ($row['status'] === 'acknowledged') {
     
     $imageName = "none";
-    if (isset($_FILES['attached_photo'])) {
+    
+    echo '<pre>'; print_r($_FILES['attached_photo']['name']); echo '</pre>';
+    if (isset($_FILES['attached_photo']) && !empty($_FILES['attached_photo']['name'])) {
+        echo "set image";
         $file = $_FILES['attached_photo'];
 
         // Check if the uploaded file is an image
@@ -73,5 +78,5 @@ if ($con->query($sql) === TRUE) {
 $con->close();
 
 // Reload the page
-header("Location: complaints.php");
+// header("Location: complaints.php");
 exit;

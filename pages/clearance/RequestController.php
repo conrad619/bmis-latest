@@ -26,6 +26,7 @@
         // '".$_POST["animal_name"]."','".$_POST["num_animal"]."','".$_POST["sell_to"]."','".$_POST["address_person"].",
         // '".$_POST["name_partner"]."','".$_POST["bdate_partner"]."','".$_POST["living_together"]."','".$_POST["num_living_together"]."')");
         $imageName = "none";
+        $fileName = "none";
         if (isset($_FILES['attached_photo'])) {
             $file = $_FILES['attached_photo'];
             
@@ -46,6 +47,27 @@
                 // Insert image information into the database
                 
         }
+
+        if (isset($_FILES['attached_file'])) {
+            $file = $_FILES['attached_file'];
+            
+            // Check if the uploaded file is an image
+            $imageFileType = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+            // if (getimagesize($file['tmp_name']) === false) {
+            //     die("Error: This is not an image file.");
+            // }
+            
+            // Generate a unique name for the image
+            $fileName = uniqid() . '.' . $imageFileType;
+            
+            // Set the upload directory path
+            $uploadDir = "uploads/";
+            
+            // Move the uploaded image to the server
+            move_uploaded_file($file['tmp_name'], $uploadDir . $fileName);
+                // Insert image information into the database
+                
+        }
     
         $request_form_type_insert = mysqli_query($con,"INSERT INTO request_form_type (req_form_information_id,req_id,purpose,
         terms_of_living,
@@ -54,7 +76,7 @@
         father_name,mother_name,father_age,mother_age,
         animal_name,num_animal,sell_to,address_person,
         name_partner,bdate_partner,living_together,num_living_together,
-        attached_photo)
+        attached_photo, attached_file)
         values ('".$req_form_information_id."', '".$_POST['req_type']."', '".$_POST['purpose']."',
         '".$_POST['terms_of_living']."',
         '".$_POST['cedula_number']."',
@@ -62,7 +84,7 @@
         '".$_POST['father_name']."','".$_POST['mother_name']."','".$_POST['father_age']."','".$_POST['mother_age']."',
         '".$_POST['animal_name']."','".$_POST['num_animal']."','".$_POST['sell_to']."','".$_POST['address_person']."',
         '".$_POST['name_partner']."','".$_POST['bdate_partner']."','".$_POST['living_together']."','".$_POST['num_living_together']."',
-        '".$imageName."')");
+        '".$imageName."','".$fileName."')");
         // $request_form_type_insert = mysqli_query($con,"INSERT INTO request_form_type (
 
         // req_form_information_id,
@@ -123,7 +145,8 @@
             "contact_no" => 0,
             "address_to_deliver" => 0,
             "reciept_id" => $reciept_id,
-            "attached_photo" => $row['attached_photo']
+            "attached_photo" => $row['attached_photo'],
+            "attached_file" => $row['attached_file'],
             )
         );
         echo json_encode($data);

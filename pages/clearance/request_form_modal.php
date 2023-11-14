@@ -239,6 +239,10 @@ while ($row = mysqli_fetch_array($purok_list)){
                            <label for="attached_photo" class="col-form-label">Attach Photo:</label>
                            <input type="file" name="attached_photo" accept="image/*">
                         </div>
+                        <div class="form-group col-md-12">
+                           <label for="attached_file" class="col-form-label">Attach File:</label>
+                           <input type="file" name="attached_file" accept=".doc, .pdf, .png, .jpg, .jpeg, .docx, .txt, .rar, .zip">
+                        </div>
                         
                      </div>
                   </div>
@@ -345,6 +349,9 @@ while ($row = mysqli_fetch_array($purok_list)){
             </div>
             <div class="form-group">
                <label for="recipient-name" class="col-form-label">Attached Photo: <img src="" id="sp_attached_photo" width="100%"></label>
+            </div>
+            <div class="form-group">
+               <label for="recipient-name" class="col-form-label">Attached File: <a href="#" id="sp_attached_file" width="100%">File Attached</a></label>
             </div>
             <!-- <div class="form-group">
                <label for="recipient-name" class="col-form-label">Amount Form: <span id="sp_amount_form_name"></span></label>
@@ -542,9 +549,13 @@ while ($row = mysqli_fetch_array($purok_list)){
             data.append(input.name, input.value);
          });
 
+         //File image
+         var file_image = $('input[name="attached_photo"]')[0].files;
+         data.append("attached_photo", file_image[0]);
+
          //File data
-         var file_data = $('input[name="attached_photo"]')[0].files;
-         data.append("attached_photo", file_data[0]);
+         var file_data = $('input[name="attached_file"]')[0].files;
+         data.append("attached_file", file_data[0]);
 
          $.ajax({
             type: "POST",
@@ -577,6 +588,7 @@ while ($row = mysqli_fetch_array($purok_list)){
                   $("#sp_conctact_name").text(jsonData.data.contact_no);
                   $("#sp_delivery_name").text(jsonData.data.address_to_deliver);
                   $("#sp_attached_photo").attr("src", "./uploads/"+jsonData.data.attached_photo);
+                  $("#sp_attached_file").attr("href", "./uploads/"+jsonData.data.attached_file);
                   $("#reciept_id").attr("value", jsonData.data.reciept_id);
                }
             }
