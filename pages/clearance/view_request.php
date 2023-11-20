@@ -289,7 +289,10 @@ WHERE form_table1.req_form_type_id  = '$request_id'
                     $information_insert = mysqli_query($con,"UPDATE request_form_information set status = 'Process' WHERE req_form_information_id  = '$request_info_id'") or die('Error: ' . mysqli_error($con));
                 }
                 
-
+                if(isset($_SESSION['role'])){
+                    $action = 'Updated request form set status to proccess with  id '. $row['req_form_information_id '];
+                    $iquery = mysqli_query($con,"INSERT INTO tbllogs (userid,user,username,logdate,action) values ('".$_SESSION['userid']."', '".$_SESSION['role']."','".$_SESSION['username']."',  NOW(), '".$action."')");
+                }
                 
                 $timestamp = strtotime($row['created_at']);
                 $new_date_format = date('F j, Y g:i:a', $timestamp);

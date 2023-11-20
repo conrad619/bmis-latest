@@ -1,6 +1,6 @@
 <?php
- include "../connection.php";
 session_start();
+ include "../connection.php";
 
  if(isset($_POST["update_save"])){
 
@@ -74,7 +74,11 @@ session_start();
     income_month = '".$_POST["income_mainuser"]."'
     WHERE resident_id = '".$_POST["resident_id"]."' 
     ");
-
+    
+    if(isset($_SESSION['role'])){
+        $action = 'Updated profile resident with  id '. $row['resident_id'];
+        $iquery = mysqli_query($con,"INSERT INTO tbllogs (userid,user,username,logdate,action) values ('".$_SESSION['userid']."', '".$_SESSION['role']."','".$_SESSION['username']."',  NOW(), '".$action."')");
+     }
 
 
     if ($update_profile) {
@@ -165,6 +169,11 @@ session_start();
       set profile_photo = '".$user_imgas."'
        WHERE resident_id = '".$_POST["resident_id"]."' 
        ");
+
+       if(isset($_SESSION['role'])){
+            $action = 'Updated profile photo resident with  id '. $row['resident_id'];
+            $iquery = mysqli_query($con,"INSERT INTO tbllogs (userid,user,username,logdate,action) values ('".$_SESSION['userid']."', '".$_SESSION['role']."','".$_SESSION['username']."',  NOW(), '".$action."')");
+        }
        
        if ($update_profile) {
       

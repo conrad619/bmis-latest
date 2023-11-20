@@ -179,6 +179,11 @@ if (!isset($_SESSION['role'])) {
                                 $query = "UPDATE complaints SET old_schedule = new_schedule, new_schedule = '$new_schedule' WHERE complaint_id = $complaint_id";
                                 $result = mysqli_query($con, $query);
 
+                                if(isset($_SESSION['role'])){
+                                    $action = 'Updated complaint schedule '. $row['complaint_id'] .'  in '.$new_schedule;
+                                    $iquery = mysqli_query($con,"INSERT INTO tbllogs (userid,user,username,logdate,action) values ('".$_SESSION['userid']."', '".$_SESSION['role']."','".$_SESSION['username']."',  NOW(), '".$action."')");
+                                }
+
                                 // Check if the query was successful
                                 if ($result) {
                                     header("Location: {$_SERVER['REQUEST_URI']}");

@@ -1,4 +1,5 @@
 <?php
+session_start();
 if(isset($_POST['btn_add'])){
     $txt_cname = $_POST['txt_cname'];
     $txt_cage = $_POST['txt_cage'];

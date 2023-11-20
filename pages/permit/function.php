@@ -1,4 +1,5 @@
 <?php
+session_start();
 if(isset($_POST['btn_add'])){
     $ddl_resident = $_POST['ddl_resident'];
     $txt_busname = $_POST['txt_busname'];

@@ -1,4 +1,5 @@
 <?php
+session_start();
 if(isset($_POST['btn_add'])){
     $txt_doc = $_POST['txt_doc'];
     $txt_act = $_POST['txt_act'];
@@ -9,7 +10,7 @@ if(isset($_POST['btn_add'])){
 
     if(isset($_SESSION['role'])){
         $action = 'Added Activity '.$txt_act;
-        $iquery = mysqli_query($con,"INSERT INTO tbllogs (user,logdate,action) values ('".$_SESSION['role']."', NOW(), '".$action."')");
+        $iquery = mysqli_query($con,"INSERT INTO tbllogs (userid,user,username,logdate,action) values ('".$_SESSION['userid']."', '".$_SESSION['role']."','".$_SESSION['username']."',  NOW(), '".$action."')");
     }
 
 

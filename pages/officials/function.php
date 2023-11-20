@@ -1,4 +1,5 @@
 <?php
+session_start();
 if(isset($_POST['btn_add'])){
     $ddl_pos = $_POST['ddl_pos'];
     $txt_cname = $_POST['txt_cname'];

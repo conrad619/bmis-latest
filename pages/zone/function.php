@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 include "../connection.php";
 
 
@@ -31,6 +31,10 @@ if(isset($_POST['btn_add'])){
             $_SESSION['added'] = 1;
             header ("location: zone.php");
         } 
+        if(isset($_SESSION['role'])){
+            $action = 'Added Zone number '.$txt_zone;
+            $iquery = mysqli_query($con,"INSERT INTO tbllogs (user,logdate,action) values ('".$_SESSION['role']."', NOW(), '".$action."')");
+        }
     }
     else{
         $_SESSION['duplicateuser'] = 1;
@@ -83,6 +87,10 @@ if(isset($_POST['btn_delete']))
         {
             $delete_query = mysqli_query($con,"DELETE from tblzone where id = '$value' ") or die('Error: ' . mysqli_error($con));
                     
+            if(isset($_SESSION['role'])){
+                $action = 'Delete zone with id '.$value;
+                $iquery = mysqli_query($con,"INSERT INTO tbllogs (user,logdate,action) values ('".$_SESSION['role']."', NOW(), '".$action."')");
+            }
             if($delete_query == true)
             {
                 $_SESSION['delete'] = 1;

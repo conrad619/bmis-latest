@@ -1,4 +1,5 @@
 <?php
+session_start();
 if(isset($_POST['btn_add'])){
     $txt_cnum = $_POST['txt_cnum'];
     $ddl_resident = $_POST['ddl_resident'];
@@ -11,10 +12,12 @@ if(isset($_POST['btn_add'])){
     $chkdup = mysqli_query($con,"SELECT * from tblclearance where clearanceNo = ".$txt_cnum." ");
     $num_rows = mysqli_num_rows($chkdup);
 
+
     if(isset($_SESSION['role'])){
         $action = 'Added Clearance with clearance number of '.$txt_cnum;
-        $iquery = mysqli_query($con,"INSERT INTO tbllogs (user,logdate,action) values ('".$_SESSION['role']."', NOW(), '".$action."')");
+        $iquery = mysqli_query($con,"INSERT INTO tbllogs (userid,user,username,logdate,action) values ('".$_SESSION['userid']."', '".$_SESSION['role']."','".$_SESSION['username']."',  NOW(), '".$action."')");
     }
+    
 
     if($num_rows == 0){
         if($_SESSION['role'] == "Administrator"){
@@ -78,6 +81,11 @@ if(isset($_POST['btn_approve']))
 
     $approve_query = mysqli_query($con,"UPDATE tblclearance set clearanceNo= '".$txt_cnum."', findings = '".$txt_findings."', orNo = '".$txt_ornum."', samount = '".$txt_amount."', status='Approved' where id = '".$txt_id."' ") or die('Error: ' . mysqli_error($con));
 
+    if(isset($_SESSION['role'])){
+        $action = 'Updated clearance status to Approved with  id '. $row['id'];
+        $iquery = mysqli_query($con,"INSERT INTO tbllogs (userid,user,username,logdate,action) values ('".$_SESSION['userid']."', '".$_SESSION['role']."','".$_SESSION['username']."',  NOW(), '".$action."')");
+    }
+
     if($approve_query == true){
         header("location: ".$_SERVER['REQUEST_URI']);
     }
@@ -89,6 +97,11 @@ if(isset($_POST['btn_disapprove']))
     $txt_id = $_POST['hidden_id'];
     $txt_findings = $_POST['txt_findings'];
     $disapprove_query = mysqli_query($con,"UPDATE tblclearance set findings = '".$txt_findings."' , status='Disapproved' where id = '".$txt_id."' ") or die('Error: ' . mysqli_error($con));
+    
+    if(isset($_SESSION['role'])){
+        $action = 'Updated clearance status to Disapproved with  id '. $row['id'];
+        $iquery = mysqli_query($con,"INSERT INTO tbllogs (userid,user,username,logdate,action) values ('".$_SESSION['userid']."', '".$_SESSION['role']."','".$_SESSION['username']."',  NOW(), '".$action."')");
+    }
 
     if($disapprove_query == true){
         header("location: ".$_SERVER['REQUEST_URI']);
@@ -107,10 +120,12 @@ if(isset($_POST['btn_save']))
 
     $update_query = mysqli_query($con,"UPDATE tblclearance set clearanceNo= '".$txt_edit_cnum."', findings = '".$txt_edit_findings."', purpose = '".$txt_edit_purpose."', orNo = '".$txt_edit_ornum."', samount = '".$txt_edit_amount."' where id = '".$txt_id."' ") or die('Error: ' . mysqli_error($con));
 
+
     if(isset($_SESSION['role'])){
-        $action = 'Update Clearance with clearance number of '.$txt_edit_cnum;
-        $iquery = mysqli_query($con,"INSERT INTO tbllogs (user,logdate,action) values ('".$_SESSION['role']."', NOW(), '".$action."')");
+        $action = 'Updated Clearance with clearance number of '.$txt_edit_cnum;
+        $iquery = mysqli_query($con,"INSERT INTO tbllogs (userid,user,username,logdate,action) values ('".$_SESSION['userid']."', '".$_SESSION['role']."','".$_SESSION['username']."',  NOW(), '".$action."')");
     }
+    
 
     if($update_query == true){
         $_SESSION['edited'] = 1;

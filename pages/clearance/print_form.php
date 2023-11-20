@@ -1,8 +1,8 @@
 <?php
+session_start();
 date_default_timezone_set('Asia/Manila');
 
 include "../connection.php";
-session_start();
 
 if (!isset($_SESSION['role'])) {
     header("Location: ../../login.php");
@@ -120,6 +120,10 @@ WHERE form_table1.req_form_type_id  = '$request_id'
         $set_schedule = mysqli_query($con, "UPDATE request_form_information
     set status = 'completed' WHERE req_form_information_id  = '" . $id_request_form . "'") or die('Error: ' . mysqli_error($con));
 
+        if(isset($_SESSION['role'])){
+            $action = 'Updated request form status to completed with  id '. $row['req_form_information_id '];
+            $iquery = mysqli_query($con,"INSERT INTO tbllogs (userid,user,username,logdate,action) values ('".$_SESSION['userid']."', '".$_SESSION['role']."','".$_SESSION['username']."',  NOW(), '".$action."')");
+        }
 
 
 

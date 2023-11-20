@@ -1,4 +1,5 @@
 <?php
+session_start();
 if(isset($_POST['btn_add'])){
     $txt_name = $_POST['txt_name'];
     $txt_uname = $_POST['txt_uname'];

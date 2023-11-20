@@ -1,7 +1,7 @@
 <?php 
         
-        include "../connection.php";
         session_start();
+        include "../connection.php";
 
 
         if(isset($_POST['set_now'])){
@@ -21,6 +21,11 @@
         $set_schedule = mysqli_query($con,"UPDATE request_form_information
         set status = 'ready_pick_up', schedule_pickup = '".$store_database."' 
         WHERE req_form_information_id  = '".$id_request_form."'") or die('Error: ' . mysqli_error($con));
+        
+        if(isset($_SESSION['role'])){
+            $action = 'Updated request form set schedule to '. $schedule_pickup .' with  id '. $row['req_form_information_id '];
+            $iquery = mysqli_query($con,"INSERT INTO tbllogs (userid,user,username,logdate,action) values ('".$_SESSION['userid']."', '".$_SESSION['role']."','".$_SESSION['username']."',  NOW(), '".$action."')");
+        }
 
        
 
@@ -72,7 +77,10 @@
             set status = 'declined' 
             WHERE req_form_information_id  = '".$id_request_form."'") or die('Error: ' . mysqli_error($con));
     
-           
+            if(isset($_SESSION['role'])){
+                $action = 'Updated request form set status to declined with  id '. $row['req_form_information_id '];
+                $iquery = mysqli_query($con,"INSERT INTO tbllogs (userid,user,username,logdate,action) values ('".$_SESSION['userid']."', '".$_SESSION['role']."','".$_SESSION['username']."',  NOW(), '".$action."')");
+            }
     
                 if ($set_schedule) {
     

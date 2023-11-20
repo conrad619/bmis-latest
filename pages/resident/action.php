@@ -1,7 +1,7 @@
 
 <?php
-include "../connection.php";
 session_start();
+include "../connection.php";
 
 if (isset($_POST['register_now'])) {
 
@@ -94,6 +94,12 @@ if (isset($_POST['register_now'])) {
             )";
         $query_run = mysqli_query($con, $query) or die(mysqli_error($con));
     }
+    $last_id = $con->insert_id;
+    if(isset($_SESSION['role'])){
+        $action = 'Added new house member '.$s_hm_f_name.' with id '.$last_id;
+        $iquery = mysqli_query($con,"INSERT INTO tbllogs (user,logdate,action) values ('".$_SESSION['role']."', NOW(), '".$action."')");
+    }
+    
 
 
 
@@ -266,6 +272,11 @@ if (isset($_POST['register_now'])) {
                 )";
     $query_run_2 = mysqli_query($con, $query_2) or die(mysqli_error($con));
 
+    $last_id = $con->insert_id;
+    if(isset($_SESSION['role'])){
+        $action = 'Added new resident '.$s_hm_f_name.' with id '.$last_id;
+        $iquery = mysqli_query($con,"INSERT INTO tbllogs (user,logdate,action) values ('".$_SESSION['role']."', NOW(), '".$action."')");
+    }
 
     //here
     if ($query_run_2) {
@@ -306,6 +317,12 @@ if (isset($_POST['register_now'])) {
 
         echo '<script type="text/javascript">alert("Failed to insert");</script>';
     }
+    $last_id = $con->insert_id;
+    if(isset($_SESSION['role'])){
+        $action = 'Added new resident house member '.$s_hm_f_name.' with id '.$last_id;
+        $iquery = mysqli_query($con,"INSERT INTO tbllogs (user,logdate,action) values ('".$_SESSION['role']."', NOW(), '".$action."')");
+    }
+    
 }
 
 
