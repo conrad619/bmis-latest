@@ -1,5 +1,5 @@
 <?php
-    
+    session_start();
     // echo json_encode(array('success' => 0));
     if(isset($_POST["user_id"])){
         include "../connection.php";
@@ -9,6 +9,11 @@
         values (".$_POST['user_id'].", '".$_POST['household_member_id']."', '".$_POST["resident_address"]."','".$status."')");
         $req_form_information_id = mysqli_insert_id($con);
         $date_deceased = $_POST['day_of_deceased'] == '' ? "null" : $_POST['day_of_deceased'];
+
+        if(isset($_SESSION['role'])){
+            $action = 'Added Request information '.$status;
+            $iquery = mysqli_query($con,"INSERT INTO tbllogs (userid,user,username,logdate,action) values ('".$_SESSION['userid']."', '".$_SESSION['role']."','".$_SESSION['username']."',  NOW(), '".$action."')");
+        }
 
       
         // $request_form_type_insert = mysqli_query($con,"INSERT INTO request_form_type (req_form_information_id,req_id,purpose,
@@ -85,6 +90,11 @@
         '".$_POST['animal_name']."','".$_POST['num_animal']."','".$_POST['sell_to']."','".$_POST['address_person']."',
         '".$_POST['name_partner']."','".$_POST['bdate_partner']."','".$_POST['living_together']."','".$_POST['num_living_together']."',
         '".$imageName."','".$fileName."')");
+        
+        if(isset($_SESSION['role'])){
+            $action = 'Added Request information of purpose '.$_POST['purpose'];
+            $iquery = mysqli_query($con,"INSERT INTO tbllogs (userid,user,username,logdate,action) values ('".$_SESSION['userid']."', '".$_SESSION['role']."','".$_SESSION['username']."',  NOW(), '".$action."')");
+        }
         // $request_form_type_insert = mysqli_query($con,"INSERT INTO request_form_type (
 
         // req_form_information_id,
@@ -119,6 +129,12 @@
         values (".$req_form_information_id.", ".$_POST['req_type'].", ".$req_form_type_id.",".$pay_restult["pay_id"].",'".$_POST["contact_no"]."', '".$total_amount."',
         '".$_POST["address_to_deliver"]."',0)");
         $reciept_id = mysqli_insert_id($con);
+        
+        if(isset($_SESSION['role'])){
+            $action = 'Added Request receipt_transaction with id '.$req_form_type_id;
+            $iquery = mysqli_query($con,"INSERT INTO tbllogs (userid,user,username,logdate,action) values ('".$_SESSION['userid']."', '".$_SESSION['role']."','".$_SESSION['username']."',  NOW(), '".$action."')");
+        }
+        
 
         // $squery = mysqli_query($con, "SELECT * FROM tbl_resident_house_member where household_id = ".$_POST["household_member_id"]."") or die('Error: ' . mysqli_error($con));
 
@@ -129,7 +145,8 @@
         WHERE table1.household_id = ".$_POST["household_member_id"]." AND table2.req_form_information_id = ".$req_form_information_id."";
         $user_member = $con->query($sql) or die ($con->error);
         $row = $user_member->fetch_assoc();
-    
+
+        
 
         $data = array(
             "success" => 0,

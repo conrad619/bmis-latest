@@ -1,8 +1,8 @@
 
 
 <?php
- include "../connection.php";
  session_start();
+ include "../connection.php";
  if(isset($_POST["updatemember"])){
 
 
@@ -28,6 +28,11 @@
     hmember_occupation = '".$hmember_occupation."'
     WHERE household_id  = '".$household_id."' 
      ");
+
+   if(isset($_SESSION['role'])){
+      $action = 'Updated profile resident house member with  id '. $row['household_id'];
+      $iquery = mysqli_query($con,"INSERT INTO tbllogs (userid,user,username,logdate,action) values ('".$_SESSION['userid']."', '".$_SESSION['role']."','".$_SESSION['username']."',  NOW(), '".$action."')");
+   }
      
      if ($update_profile) {
     

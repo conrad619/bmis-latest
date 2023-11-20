@@ -1,9 +1,9 @@
 <?php
+session_start();
 date_default_timezone_set('Asia/Manila');
 
 include "../connection.php";
 
-session_start();
 
 
 
@@ -66,6 +66,15 @@ function image_resize($image_type_id, $img_width, $img_height) {
         $information_insert = mysqli_query($con,"INSERT INTO tbl_announcement (ann_title,ann_description,ann_images,ann_date_posted) 
         values ('".$_POST['ann_title']."', '".$_POST['ann_description']."', '".$ann_images."', '".$date_now."')");
         //$req_form_information_id = mysqli_insert_id($con);
+
+        if(isset($_SESSION['role'])){
+            $action = 'Added Announcement titled '.$_POST['ann_title'];
+            $iquery = mysqli_query($con,"INSERT INTO tbllogs (userid,user,username,logdate,action) values ('".$_SESSION['userid']."', '".$_SESSION['role']."','".$_SESSION['username']."',  NOW(), '".$action."')");
+        }
+
+        
+
+        
 
         if ($information_insert) {
           
@@ -176,7 +185,10 @@ if (isset($_POST['update_announcement'])) {
 
     //update here ann_title ann_description
     $tbl_announcement = mysqli_query($con,"UPDATE tbl_announcement set ann_title = '".$_POST["ann_title"]."', ann_description = '".$_POST["ann_description"]."', ann_images = '".$ann_images."'  WHERE announce_id = '".$_POST["announce_id"]."' ");
-
+    if(isset($_SESSION['role'])){
+        $action = 'Updated Announcement titled '.$_POST["ann_title"];
+        $iquery = mysqli_query($con,"INSERT INTO tbllogs (userid,user,username,logdate,action) values ('".$_SESSION['userid']."', '".$_SESSION['role']."','".$_SESSION['username']."',  NOW(), '".$action."')");
+    }
     
             if ($tbl_announcement) {
               

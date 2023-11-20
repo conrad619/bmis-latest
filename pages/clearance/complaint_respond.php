@@ -1,4 +1,5 @@
 <?php
+session_start();
 // Get the form data
 $complaint_id = $_GET['ID'];
 if (isset($_POST['new_schedule'])) {
@@ -73,7 +74,10 @@ if ($con->query($sql) === TRUE) {
 } else {
     echo "Error: " . $sql . "<br>" . $con->error;
 }
-
+if(isset($_SESSION['role'])){
+    $action = 'Updated complaint on '. $row['complaint_id'] .'  with status '.$update_status;
+    $iquery = mysqli_query($con,"INSERT INTO tbllogs (userid,user,username,logdate,action) values ('".$_SESSION['userid']."', '".$_SESSION['role']."','".$_SESSION['username']."',  NOW(), '".$action."')");
+}
 // Close the database connection
 $con->close();
 

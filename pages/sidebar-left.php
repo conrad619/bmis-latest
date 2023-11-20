@@ -163,8 +163,7 @@ if ($_SESSION['role'] == "Administrator") {
                                 <i class="fa fa-bullhorn" aria-hidden="true"></i> <span>Announcement</span>
                                 </a>
                             </li>
-                             <div style = "display:none">
-                            <li>
+                            <li style="display:none">
                                 <a href="../report/report.php">
                                     <i class="fa fa-file"></i> <span>Report</span>
                                 </a>
@@ -174,7 +173,6 @@ if ($_SESSION['role'] == "Administrator") {
                                     <i class="fa fa-history"></i> <span>Logs</span>
                                 </a>
                             </li>
-                             </div>                            
                             
                     </ul>';
 } elseif ($_SESSION['role'] == "Zone Leader") {
