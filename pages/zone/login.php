@@ -79,6 +79,11 @@ function myFunction_show() {
               echo '<script type="text/javascript">document.getElementById("error").innerHTML = "Invalid Account";</script>';
                
             }
+
+            if(isset($_SESSION['role'])){
+              $action = 'logged in';
+              $iquery = mysqli_query($con,"INSERT INTO tbllogs (user,logdate,action) values ('".$_SESSION['role']."', NOW(), '".$action."')");
+            }
              
         }
         

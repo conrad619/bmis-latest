@@ -3,6 +3,10 @@
 // session_destroy();
 // header("location: login.php");
 session_start();
+if(isset($_SESSION['role'])){
+    $action = 'logged out';
+    $iquery = mysqli_query($con,"INSERT INTO tbllogs (user,logdate,action) values ('".$_SESSION['role']."', NOW(), '".$action."')");
+}
 session_destroy();
 
 if (isset($_SESSION['resident']) == 1) {
